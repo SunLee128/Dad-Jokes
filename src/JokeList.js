@@ -24,6 +24,20 @@ class JokeList extends Component  {
     }
     this.setState({jokes: jokes})
   }
+  handleClick() {
+    this.setState({ loading: true }, this.getJokes);
+  }
+  handleVote(id, delta) {
+    this.setState(
+      st => ({
+        jokes: st.jokes.map(j =>
+          j.id === id ? { ...j, votes: j.votes + delta } : j
+        )
+      }),
+      () =>
+        window.localStorage.setItem("jokes", JSON.stringify(this.state.jokes))
+    );
+  }
   render() {
     return (
       <div className="JokeList">
@@ -31,7 +45,7 @@ class JokeList extends Component  {
           <h1 className="JokeList-title">
             <span>Joke</span>List
           </h1>
-          <button>New Jokes</button>
+          <button className='JokeList-getmore' onClick={this.handleClick} >New Jokes</button>
         </div>
         <div className="JokeList-jokes">
           {this.state.jokes.map(j => (
