@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Joke from './Joke'
+import uuid from "uuid/v4";
 import './JokeList.css'
 
 class JokeList extends Component  {
@@ -43,7 +44,7 @@ class JokeList extends Component  {
       <div className="JokeList">
         <div className="JokeList-sidebar">
           <h1 className="JokeList-title">
-            <span>Joke</span>List
+            <span>Dad</span>Jokes
           </h1>
           <button className='JokeList-getmore' onClick={this.handleClick} >New Jokes</button>
         </div>
