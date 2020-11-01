@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import JokeList from './JokeList';
+import JokeList from './components/JokeList';
 
-function App () {
+function App (){
   return (
-    <div className='App'>
+    <div className="App">
       <JokeList />
     </div>
   );
