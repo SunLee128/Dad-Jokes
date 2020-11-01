@@ -10,14 +10,11 @@ const JokeList = () => {
   const [ jokes, setJokes ] = useState(initialJokes);
   const [ loading, setLoading ] = useState(false);
 
-  //using set for performance
-  // let seenJokes = new Set(jokes.map((j) => j.text));
 
   useEffect(
     () => {
       if (jokes.length === 0) getJokes();
-    },
-    [ jokes ]
+    }
   );
 
   const getJokes = async () => {
@@ -29,45 +26,13 @@ const JokeList = () => {
       tempJokes.push({ id: uuid(), joke: res.data.joke, vote: 0 });
     }
     setJokes(tempJokes);
-    console.log(jokes);
     window.localStorage.setItem('jokes', JSON.stringify(jokes));
     setLoading(false);
   };
 
-  // getJokes();
-
-  // const getJokes = async () => {
-  //   try {
-  //     let fetchedJokes = [];
-  //     while (jokes.length < numJokesToGet) {
-  //       let res = await axios.get('https://icanhazdadjoke.com/', {
-  //         headers: { Accept: 'application/json' },
-  //       });
-  //       let newJoke = res.data.joke;
-  //       if (!jokes.has(newJoke)) {
-  //         fetchedJokes.push({ id: uuid(), text: newJoke, votes: 0 });
-  //         console.log(jokes);
-  //       } else {
-  //         console.log('FOUND A DUPLICATE!');
-  //         console.log(newJoke);
-  //       }
-  //     }
-  //     setLoading(false);
-  //     setJokes([ ...jokes, ...fetchedJokes ]);
-
-  //     window.localStorage.setItem('jokes', JSON.stringify(jokes));
-  //   } catch (e) {
-  //     alert(e);
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleVote = (id, delta) => {
-    // setJokes(
-    //   (st) => ({
-    //     jokes: st.jokes.map((joke) => (joke.id === id ? { ...joke, votes: joke.votes + delta } : joke)),
-    //   }),
-    const votedJokes = jokes.map((joke) => (joke.id === id ? { ...joke, votes: joke.votes + delta } : joke));
+    const votedJokes = jokes.map((joke) => (joke.id === id ? { ...joke, vote: joke.vote + delta } : joke));
     setJokes(votedJokes);
     window.localStorage.setItem('jokes', JSON.stringify(jokes));
   };
@@ -85,7 +50,8 @@ const JokeList = () => {
       </div>
     );
   }
-  jokes.sort((a, b) => b.votes - a.votes);
+
+  jokes.sort((a, b) => b.vote - a.vote);
 
   return (
     <div className="JokeList">
@@ -97,7 +63,7 @@ const JokeList = () => {
           src="https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg"
           alt="smiley face"
         />
-        <button className="JokeList-getmore" onClick={() => handleClick}>
+        <button className="JokeList-getmore" onClick={() => handleClick()}>
           Fetch Jokes
         </button>
       </div>
@@ -106,8 +72,8 @@ const JokeList = () => {
         {jokes.map((j) => (
           <Joke
             key={j.id}
-            votes={j.votes}
-            text={j.text}
+            votes={j.vote}
+            text={j.joke}
             upvote={() => handleVote(j.id, 1)}
             downvote={() => handleVote(j.id, -1)}
           />
